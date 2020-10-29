@@ -1,0 +1,1 @@
+# webpack5-monorepo-test
