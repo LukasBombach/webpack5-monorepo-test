@@ -1,0 +1,6 @@
+{
+  "name": "webpack5-monorepo-test",
+  "workspaces": [
+    "packages/*"
+  ]
+}

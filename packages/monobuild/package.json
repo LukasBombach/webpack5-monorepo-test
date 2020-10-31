@@ -1,0 +1,6 @@
+{
+  "name": "monobuild",
+  "dependencies": {
+    "webpack": "5.3.2"
+  }
+}
