@@ -1,5 +1,6 @@
 {
   "name": "webpack5-monorepo-test",
+  "private": true,
   "workspaces": [
     "packages/*"
   ]
