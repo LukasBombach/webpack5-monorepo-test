@@ -1695,6 +1695,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@project/app@workspace:packages/app":
+  version: 0.0.0-use.local
+  resolution: "@project/app@workspace:packages/app"
+  dependencies:
+    "@types/node": 14.14.6
+    "@types/react": 16.9.55
+    next: 10.0.0
+    react: 17.0.1
+    react-dom: 17.0.1
+    typescript: 4.0.5
+  languageName: unknown
+  linkType: soft
+
+"@project/ui@workspace:packages/ui":
+  version: 0.0.0-use.local
+  resolution: "@project/ui@workspace:packages/ui"
+  dependencies:
+    "@types/react": 16.9.55
+    react: 17.0.1
+  languageName: unknown
+  linkType: soft
+
 "@types/eslint-scope@npm:^3.7.0":
   version: 3.7.0
   resolution: "@types/eslint-scope@npm:3.7.0"
@@ -5276,9 +5298,9 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"monobuild@workspace:packages/monobuild":
+"monopack@workspace:packages/monopack":
   version: 0.0.0-use.local
-  resolution: "monobuild@workspace:packages/monobuild"
+  resolution: "monopack@workspace:packages/monopack"
   dependencies:
     "@babel/core": 7.12.3
     "@babel/preset-env": 7.12.1
@@ -5468,19 +5490,6 @@ fsevents@~2.1.2:
   checksum: c01b177cb2e2aec07bb75f685f07e42af8db088b44827b1f482bbb0c5a0f3c4989dfe537d4cc55eac373f6645c9d67ac7d3ffb0f52c4bd8c8a3b2a62ea102bb6
   languageName: node
   linkType: hard
-
-"nextapp@workspace:packages/nextapp":
-  version: 0.0.0-use.local
-  resolution: "nextapp@workspace:packages/nextapp"
-  dependencies:
-    "@types/node": 14.14.6
-    "@types/react": 16.9.55
-    next: 10.0.0
-    react: 17.0.1
-    react-dom: 17.0.1
-    typescript: 4.0.5
-  languageName: unknown
-  linkType: soft
 
 "node-abi@npm:^2.7.0":
   version: 2.19.1

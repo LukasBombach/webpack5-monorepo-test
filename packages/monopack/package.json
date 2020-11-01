@@ -1,5 +1,5 @@
 {
-  "name": "monobuild",
+  "name": "monopack",
   "scripts": {
     "build": "webpack"
   },
