@@ -1,5 +1,5 @@
-import { resolve } from "path";
-import getBaseWebpackConfig from "next/dist/build/webpack-config";
+const { resolve } = require("path");
+const getBaseWebpackConfig = require("next/dist/build/webpack-config").default;
 
 const src = (path = "") => resolve(process.cwd(), "src", path);
 const dist = (path = "") => resolve(process.cwd(), "dist", path);
