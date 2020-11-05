@@ -1,6 +1,10 @@
 {
   "name": "@project/ui",
   "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "build": "monopack"
+  },
   "dependencies": {
     "react": "17.0.1"
   },

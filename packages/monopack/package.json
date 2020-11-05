@@ -5,6 +5,9 @@
   "scripts": {
     "build": "webpack"
   },
+  "bin": {
+    "monopack": "./dist/index.js"
+  },
   "dependencies": {
     "@babel/core": "7.12.3",
     "@babel/preset-env": "7.12.1",
@@ -17,6 +20,7 @@
     "@types/node": "14.14.6",
     "next": "10.0.0",
     "next-server": "9.0.5",
+    "path-browserify": "1.0.1",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "ts-node": "9.0.0",

@@ -1,4 +1,8 @@
+// #!/usr/bin/env node
+
 import { resolve } from "path";
+
+/* import { resolve } from "path";
 import getBaseWebpackConfig from "next/dist/build/webpack-config";
 
 const src = (path = "") => resolve(process.cwd(), "src", path);
@@ -23,4 +27,6 @@ getBaseWebpackConfig(process.cwd(), {
   rewrites: [],
 })
   .then(config => console.log(config))
-  .catch(error => console.error(error));
+  .catch(error => console.error(error)); */
+
+console.log("hello world", resolve(process.cwd()));

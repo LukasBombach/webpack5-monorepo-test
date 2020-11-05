@@ -1,4 +1,4 @@
-const path = require("path");
+const { resolve } = require("path");
 
 module.exports = {
   entry: "./src/index.ts",
@@ -11,10 +11,11 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: [".tsx", ".ts", ".js"],
+    extensions: [".tsx", ".ts"],
+    fallback: { path: require.resolve("path-browserify") },
   },
   output: {
     filename: "index.js",
-    path: path.resolve(__dirname, "dist"),
+    path: resolve(__dirname, "dist"),
   },
 };
