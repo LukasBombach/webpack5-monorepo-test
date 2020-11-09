@@ -1,4 +1,5 @@
 const { resolve } = require("path");
+const { BannerPlugin } = require("webpack");
 
 module.exports = {
   entry: "./src/index.ts",
@@ -18,4 +19,5 @@ module.exports = {
     filename: "index.js",
     path: resolve(__dirname, "dist"),
   },
+  plugins: [new BannerPlugin({ banner: "#!/usr/bin/env node", raw: true })],
 };

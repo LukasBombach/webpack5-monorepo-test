@@ -9,6 +9,7 @@
     "react": "17.0.1"
   },
   "devDependencies": {
-    "@types/react": "16.9.55"
+    "@types/react": "16.9.55",
+    "monopack": "1.0.0"
   }
 }
