@@ -1,8 +1,10 @@
 import { getCompiler } from "./compiler";
+import { getWebpackConfig } from "./config";
 
 async function main() {
   try {
-    const compiler = await getCompiler();
+    const config = await getWebpackConfig();
+    const compiler = await getCompiler(config);
     const stats = await compiler.run();
     const info = stats.toJson();
 

@@ -42,6 +42,9 @@ export async function getWebpackConfig(): Promise<Configuration> {
       extensions: [".js", ".json"],
       mainFields: ["loader", "main"],
     },
+    optimization: {
+      usedExports: true,
+    },
     externals: await getExternals(),
   };
 }

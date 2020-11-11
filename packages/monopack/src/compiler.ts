@@ -1,10 +1,8 @@
 import webpack from "webpack";
-import { getWebpackConfig } from "./webpackConfig";
 
-import type { Stats } from "webpack";
+import type { Configuration, Stats } from "webpack";
 
-export async function getCompiler() {
-  const config = await getWebpackConfig();
+export async function getCompiler(config: Configuration) {
   const compiler = webpack(config);
   const run = () =>
     new Promise<Stats>((resolve, reject) => {
