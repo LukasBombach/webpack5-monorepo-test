@@ -4,24 +4,11 @@ import webpack from "webpack";
 import TSConfigPathsPlugin from "tsconfig-paths-webpack-plugin";
 
 const monopack = (...paths: string[]) => resolve(__dirname, ...paths);
-
 const project = (...paths: string[]) => resolve(process.cwd(), ...paths);
 const src = (...paths: string[]) => project("src", ...paths);
 const dist = (...paths: string[]) => project("dist", ...paths);
 
 const pkg = JSON.parse(fs.readFileSync(project("package.json"), "utf-8"));
-
-console.log("Using project path", [project()]);
-
-console.log(
-  "externals",
-  Object.fromEntries(
-    Object.keys({
-      ...pkg.devDependencies,
-      ...pkg.peerDependencies,
-    }).map(name => [name, true])
-  )
-);
 
 const compiler = webpack({
   entry: src("index.ts"),
@@ -29,6 +16,7 @@ const compiler = webpack({
   output: {
     filename: "index.js",
     path: dist(),
+    libraryTarget: "commonjs2",
   },
   module: {
     rules: [
@@ -58,20 +46,11 @@ const compiler = webpack({
     extensions: [".js", ".json"],
     mainFields: ["loader", "main"],
   },
-  externals: {
-    react: {
-      root: "React",
-      commonjs2: "react",
-      commonjs: "react",
-      amd: "react",
-    },
-    "react-dom": {
-      root: "ReactDOM",
-      commonjs2: "react-dom",
-      commonjs: "react-dom",
-      amd: "react-dom",
-    },
-  },
+  externals: Object.fromEntries(
+    Object.keys({
+      ...pkg.peerDependencies,
+    }).map(name => [name, true])
+  ),
 });
 
 compiler.run((error, stats) => {
