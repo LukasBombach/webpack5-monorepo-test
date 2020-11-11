@@ -1,8 +1,11 @@
 const { resolve } = require("path");
 const { BannerPlugin } = require("webpack");
+const nodeExternals = require("webpack-node-externals");
 
 module.exports = {
   entry: "./src/index.ts",
+  target: "node",
+  externals: [nodeExternals()],
   module: {
     rules: [
       {
@@ -12,8 +15,7 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: [".tsx", ".ts"],
-    fallback: { path: require.resolve("path-browserify") },
+    extensions: [".ts", ".tsx", ".js", ".jsx"],
   },
   output: {
     filename: "index.js",
