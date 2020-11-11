@@ -1,79 +1,30 @@
-import { resolve } from "path";
-import fs from "fs";
-import webpack from "webpack";
-import TSConfigPathsPlugin from "tsconfig-paths-webpack-plugin";
+import { getCompiler } from "./compiler";
 
-const monopack = (...paths: string[]) => resolve(__dirname, ...paths);
-const project = (...paths: string[]) => resolve(process.cwd(), ...paths);
-const src = (...paths: string[]) => project("src", ...paths);
-const dist = (...paths: string[]) => project("dist", ...paths);
+async function main() {
+  try {
+    const compiler = await getCompiler();
+    const stats = await compiler.run();
+    const info = stats.toJson();
 
-const pkg = JSON.parse(fs.readFileSync(project("package.json"), "utf-8"));
+    if (stats.hasErrors()) {
+      info.errors.forEach(error => {
+        console.error(error.message);
+        console.error(error.details);
+      });
+    }
 
-const compiler = webpack({
-  entry: src("index.ts"),
-  mode: "production",
-  output: {
-    filename: "index.js",
-    path: dist(),
-    libraryTarget: "commonjs2",
-  },
-  module: {
-    rules: [
-      {
-        test: /\.tsx?$/,
-        loader: "babel-loader",
-        options: {
-          presets: [
-            "@babel/preset-env",
-            "@babel/preset-react",
-            "@babel/preset-typescript",
-          ],
-        },
-      },
-    ],
-  },
-  resolve: {
-    extensions: [".ts", ".tsx", ".js", ".jsx"],
-    plugins: [
-      new TSConfigPathsPlugin({
-        configFile: monopack("../tsconfig.json"),
-      }),
-    ],
-  },
-  resolveLoader: {
-    modules: [resolve(__dirname, "../node_modules"), "node_modules"],
-    extensions: [".js", ".json"],
-    mainFields: ["loader", "main"],
-  },
-  externals: Object.fromEntries(
-    Object.keys({
-      ...pkg.peerDependencies,
-    }).map(name => [name, true])
-  ),
-});
+    if (stats.hasWarnings()) {
+      info.warnings.forEach(warning => {
+        console.warn(warning.message);
+        console.warn(warning.details);
+      });
+    }
 
-compiler.run((error, stats) => {
-  if (error) {
+    console.log("done 🎉");
+  } catch (error) {
     console.error(error);
-    return;
+    process.exit(1);
   }
+}
 
-  const info = stats.toJson();
-
-  if (stats.hasErrors()) {
-    info.errors.forEach(error => {
-      console.error(error.message);
-      console.error(error.details);
-    });
-  }
-
-  if (stats.hasWarnings()) {
-    info.warnings.forEach(warning => {
-      console.warn(warning.message);
-      console.warn(warning.details);
-    });
-  }
-
-  console.log("done 🎉");
-});
+main();
