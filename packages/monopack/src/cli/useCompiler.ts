@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import { ProgressPlugin } from "webpack";
-import { getCompiler } from "../compiler";
+import webpack, { ProgressPlugin } from "webpack";
+//import { getCompiler } from "../compiler";
 import { getWebpackConfig } from "../config";
 
-import type { Compiler } from "../compiler";
+import type { Compiler } from "webpack";
+// import type { Compiler } from "../compiler";
 
 export function useCompiler() {
   const [compiler, setCompiler] = useState<Compiler>(null);
@@ -19,7 +20,7 @@ export function useCompiler() {
   useEffect(() => {
     setIsLoading(true);
     getWebpackConfig([progressPlugin])
-      .then(config => getCompiler(config))
+      .then(config => webpack(config))
       .then(compiler => setCompiler(compiler))
       .then(() => setIsLoading(false));
   }, []);

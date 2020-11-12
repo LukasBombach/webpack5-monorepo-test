@@ -7,14 +7,14 @@ export function useCompilation() {
   const [isDone, setIsDone] = useState(false);
 
   useEffect(() => {
-    if (!compiler || compiler.isRunning()) return;
-    if (isRunning) return;
-    setIsRunning(true);
-    compiler
-      .run()
-      .then(() => setIsRunning(false))
-      .then(() => setIsDone(true));
-  }, [compiler, isRunning]);
+    if (!compiler || compiler.running) return;
+    compiler.run(() => setIsDone(true));
+  }, [compiler]);
+
+  useEffect(() => setIsRunning(Boolean(compiler?.running)), [
+    compiler,
+    compiler?.running,
+  ]);
 
   return { isLoading, isRunning, isDone, percentage, message };
 }
