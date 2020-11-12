@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { useCompiler } from "./useCompiler";
 
-export function useCompilation() {
-  const { compiler, percentage, message } = useCompiler();
+import type { Configuration } from "webpack";
+
+export function useCompilation(config?: Configuration) {
+  const { compiler, percentage, message } = useCompiler(config);
   const [isRunning, setIsRunning] = useState(false);
   const [isDone, setIsDone] = useState(false);
-
-  const isLoading = compiler === null;
 
   useEffect(() => {
     if (!compiler || compiler.running) return;
@@ -18,5 +18,5 @@ export function useCompilation() {
     compiler?.running,
   ]);
 
-  return { isLoading, isRunning, isDone, percentage, message };
+  return { compiler, isRunning, isDone, percentage, message };
 }
