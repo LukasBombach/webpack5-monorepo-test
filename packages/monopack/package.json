@@ -4,7 +4,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "webpack -w",
-    "build": "webpack"
+    "build": "webpack",
+    "build:dll": "webpack --config library.webpack.config.js"
   },
   "bin": {
     "monopack": "./dist/index.js"
