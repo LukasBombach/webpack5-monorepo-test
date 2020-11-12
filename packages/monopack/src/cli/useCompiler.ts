@@ -1,14 +1,11 @@
 import { useState, useEffect } from "react";
 import webpack, { ProgressPlugin } from "webpack";
-//import { getCompiler } from "../compiler";
 import { getWebpackConfig } from "../config";
 
 import type { Compiler } from "webpack";
-// import type { Compiler } from "../compiler";
 
 export function useCompiler() {
   const [compiler, setCompiler] = useState<Compiler>(null);
-  const [isLoading, setIsLoading] = useState(false);
   const [percentage, setPercentage] = useState("0");
   const [message, setMessage] = useState<string>();
 
@@ -18,12 +15,10 @@ export function useCompiler() {
   });
 
   useEffect(() => {
-    setIsLoading(true);
     getWebpackConfig([progressPlugin])
       .then(config => webpack(config))
-      .then(compiler => setCompiler(compiler))
-      .then(() => setIsLoading(false));
+      .then(compiler => setCompiler(compiler));
   }, []);
 
-  return { compiler, isLoading, percentage, message };
+  return { compiler, percentage, message };
 }

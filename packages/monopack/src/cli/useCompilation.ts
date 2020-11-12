@@ -2,9 +2,11 @@ import { useState, useEffect } from "react";
 import { useCompiler } from "./useCompiler";
 
 export function useCompilation() {
-  const { compiler, isLoading, percentage, message } = useCompiler();
+  const { compiler, percentage, message } = useCompiler();
   const [isRunning, setIsRunning] = useState(false);
   const [isDone, setIsDone] = useState(false);
+
+  const isLoading = compiler === null;
 
   useEffect(() => {
     if (!compiler || compiler.running) return;
