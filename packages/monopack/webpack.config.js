@@ -3,7 +3,7 @@ const { BannerPlugin } = require("webpack");
 const nodeExternals = require("webpack-node-externals");
 
 module.exports = {
-  entry: "./src/index.ts",
+  entry: "./src/index.tsx",
   target: "node",
   externals: [nodeExternals()],
   module: {
