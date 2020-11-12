@@ -1,7 +1,6 @@
-import { promises as fs } from "fs";
 import nodeExternals from "webpack-node-externals";
-
-import { monopack, src, dist, project } from "./paths";
+import { monopack } from "./monopack";
+import { project } from "./project";
 
 import type { Configuration } from "webpack";
 
@@ -9,18 +8,18 @@ export async function getWebpackConfig(
   plugins: Configuration["plugins"] = []
 ): Promise<Configuration> {
   return {
-    entry: src("index.ts"),
+    entry: project.resolve("src/index.ts"),
     mode: "production",
     output: {
       filename: "index.js",
-      path: dist(),
+      path: project.resolve("dist"),
       libraryTarget: "commonjs2",
     },
     module: {
       rules: [
         {
           test: /\.tsx?$/,
-          include: src(),
+          include: project.resolve("src"),
           loader: "babel-loader",
           options: {
             presets: [
@@ -36,7 +35,7 @@ export async function getWebpackConfig(
       extensions: [".ts", ".tsx", ".js", ".jsx"],
     },
     resolveLoader: {
-      modules: ["node_modules", monopack("node_modules")],
+      modules: ["node_modules", monopack.resolve("node_modules")],
       extensions: [".js", ".json"],
       mainFields: ["loader", "main"],
     },
@@ -53,11 +52,6 @@ export async function getWebpackConfig(
 }
 
 async function getExternals(): Promise<Record<string, true>> {
-  const packageJSON = await fs.readFile(project("package.json"), "utf-8");
-  const { peerDependencies } = JSON.parse(packageJSON);
-  return Object.fromEntries(
-    Object.keys({
-      ...peerDependencies,
-    }).map(name => [name, true])
-  );
+  const { peerDependencies } = await project.getPackageJson();
+  return Object.fromEntries(Object.keys(peerDependencies).map(n => [n, true]));
 }
