@@ -22,4 +22,10 @@ module.exports = {
     path: resolve(__dirname, "dist"),
   },
   plugins: [new BannerPlugin({ banner: "#!/usr/bin/env node", raw: true })],
+  optimization: {
+    minimize: false,
+    removeAvailableModules: false,
+    removeEmptyChunks: false,
+    splitChunks: false,
+  },
 };

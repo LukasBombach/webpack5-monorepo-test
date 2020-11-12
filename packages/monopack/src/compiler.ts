@@ -2,15 +2,19 @@ import webpack from "webpack";
 
 import type { Configuration, Stats } from "webpack";
 
-export interface Compiler {
-  run: () => Promise<webpack.Stats>;
-}
-export async function getCompiler(config: Configuration): Promise<Compiler> {
-  const compiler = webpack(config);
+export type Compiler = ReturnType<typeof getCompiler> extends Promise<infer T>
+  ? T
+  : never;
+
+export async function getCompiler(config: Configuration) {
+  const compiler = webpack(config, () => {});
+
   const run = () =>
     new Promise<Stats>((resolve, reject) => {
       compiler.run((error, stats) => (error ? reject(error) : resolve(stats)));
     });
 
-  return { run };
+  const isRunning = () => compiler.running;
+
+  return { run, isRunning };
 }

@@ -1,11 +1,13 @@
 import { promises as fs } from "fs";
+import nodeExternals from "webpack-node-externals";
 
-import TSConfigPathsPlugin from "tsconfig-paths-webpack-plugin";
 import { monopack, src, dist, project } from "./paths";
 
 import type { Configuration } from "webpack";
 
-export async function getWebpackConfig(): Promise<Configuration> {
+export async function getWebpackConfig(
+  plugins: Configuration["plugins"] = []
+): Promise<Configuration> {
   return {
     entry: src("index.ts"),
     mode: "production",
@@ -18,6 +20,7 @@ export async function getWebpackConfig(): Promise<Configuration> {
       rules: [
         {
           test: /\.tsx?$/,
+          include: src(),
           loader: "babel-loader",
           options: {
             presets: [
@@ -31,11 +34,6 @@ export async function getWebpackConfig(): Promise<Configuration> {
     },
     resolve: {
       extensions: [".ts", ".tsx", ".js", ".jsx"],
-      plugins: [
-        new TSConfigPathsPlugin({
-          configFile: monopack("tsconfig.json"),
-        }),
-      ],
     },
     resolveLoader: {
       modules: ["node_modules", monopack("node_modules")],
@@ -43,13 +41,18 @@ export async function getWebpackConfig(): Promise<Configuration> {
       mainFields: ["loader", "main"],
     },
     optimization: {
+      minimize: false,
       usedExports: true,
+      removeAvailableModules: false,
+      removeEmptyChunks: false,
+      splitChunks: false,
     },
-    externals: await getExternals(),
+    externals: { ...nodeExternals(), ...(await getExternals()) },
+    plugins: [...plugins],
   };
 }
 
-async function getExternals(): Promise<Configuration["externals"]> {
+async function getExternals(): Promise<Record<string, true>> {
   const packageJSON = await fs.readFile(project("package.json"), "utf-8");
   const { peerDependencies } = JSON.parse(packageJSON);
   return Object.fromEntries(
