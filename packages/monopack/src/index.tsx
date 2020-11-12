@@ -1,5 +1,5 @@
 import React from "react";
 import { render } from "ink";
-import { MonopackCli } from "./MonopackCli";
+import { Cli } from "./cli";
 
-render(<MonopackCli />);
+render(<Cli />);
