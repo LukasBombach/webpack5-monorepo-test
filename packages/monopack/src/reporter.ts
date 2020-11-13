@@ -1,4 +1,5 @@
 import { getDevelopmentReporter } from "./reporter/development";
+import { getProductionReporter } from "./reporter/production";
 
 import type { Compiler } from "webpack";
 import type { Options } from "./options";
@@ -13,5 +14,6 @@ export async function getReporter(
   events: Events,
   options: Options
 ): Promise<Reporter> {
-  return await getDevelopmentReporter(compiler, events, options);
+  return await getProductionReporter(compiler, events, options);
+  // return await getDevelopmentReporter(compiler, events, options);
 }
