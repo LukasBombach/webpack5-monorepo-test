@@ -18,7 +18,7 @@ export const DeveloplmentCli = ({ compiler }: DeveloplmentCliProps) => {
   }
 
   if (compilation.isRunning) {
-    const percentage = compilation.percentage.padLeft(3, " ");
+    const percentage = compilation.percentage.toString().padLeft(3, " ");
     const message = compilation.message;
     const text = `Compiling... ${percentage}% ${message}`;
     return <Text>{text}</Text>;
