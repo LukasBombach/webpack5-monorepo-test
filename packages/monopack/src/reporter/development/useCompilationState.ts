@@ -12,7 +12,7 @@ const defaultState: CompilationState = {
   isDone: false,
 };
 
-export function useCompilationStates(initialState = defaultState) {
+export function useCompilationState(initialState = defaultState) {
   const [state, setState] = useState<CompilationState>(initialState);
 
   const start = () => {

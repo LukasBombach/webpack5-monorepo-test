@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useCompilationStates } from "./useCompilationStates";
+import { useCompilationState } from "./useCompilationState";
 import { useCompilationProgress } from "./useCompilationProgress";
 
 import type { Compiler } from "webpack";
@@ -17,7 +17,7 @@ export function useCompilation(
   compiler: Compiler,
   events: Events
 ): Compilation {
-  const { isLoading, isRunning, isDone, start, end } = useCompilationStates();
+  const { isLoading, isRunning, isDone, start, end } = useCompilationState();
   const { percentage, message } = useCompilationProgress(events);
 
   useEffect(() => {
