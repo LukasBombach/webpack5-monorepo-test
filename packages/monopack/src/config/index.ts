@@ -1,3 +1,13 @@
+import nodeExternals from "webpack-node-externals";
+import {
+  project,
+  isDev,
+  getMonopackModules,
+  getFastBuild,
+  getPlugins,
+  getSmallBundle,
+} from "./util";
+
 export const config = {
   entry: project.getEntry(),
   mode: project.getMode(),
@@ -30,7 +40,7 @@ export const config = {
     extensions: [".js", ".json"],
     mainFields: ["loader", "main"],
   },
-  optimization: isDev() ? getFastOptimizations() : getProductionOptimizations(),
+  optimization: isDev() ? getFastBuild() : getSmallBundle(),
   externals: { ...nodeExternals(), ...project.getPeerDepsAsExternals() },
   plugins: getPlugins(),
 };
