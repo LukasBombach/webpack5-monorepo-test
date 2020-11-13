@@ -1,3 +1,5 @@
+import { getDevelopmentReporter } from "./reporter/development";
+
 import type { Compiler } from "webpack";
 import type { Options } from "./options";
 
@@ -8,4 +10,6 @@ export interface Reporter {
 export async function getReporter(
   compiler: Compiler,
   options: Options
-): Promise<Reporter> {}
+): Promise<Reporter> {
+  return await getDevelopmentReporter(compiler, options);
+}
