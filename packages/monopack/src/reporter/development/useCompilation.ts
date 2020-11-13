@@ -25,12 +25,14 @@ export function useCompilation(
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    if (compiler.running) return;
+    if (compiler.running || isDone) return;
     setIsLoading(false);
-    compiler.run(() => setIsDone(true));
-  });
-
-  useEffect(() => setIsRunning(compiler.running), [compiler.running]);
+    setIsRunning(true);
+    compiler.run(() => {
+      setIsRunning(false);
+      setIsDone(true);
+    });
+  }, [compiler.running, isDone]);
 
   useEffect(() => {
     const onProgessHandler = throttle(
