@@ -8,7 +8,7 @@ async function main() {
   const config = await getWebpackConfig(options);
   const compiler = await getWebpackCompiler(config);
   const reporter = await getReporter(compiler, options);
-  reporter.runCompilation();
+  await reporter.runCompilation();
 }
 
 main().catch(error => {

@@ -1,3 +1,5 @@
 import type { Compiler, Configuration } from "webpack";
 
-export async function getWebpackCompiler(config: Configuration): Compiler {}
+export async function getWebpackCompiler(
+  config: Configuration
+): Promise<Compiler> {}
