@@ -9,3 +9,4 @@
 - [ ] custom config overerides
 - [ ] config exports for custom config tooling
 - [ ] fucking unit tests
+- [ ] ESM?
