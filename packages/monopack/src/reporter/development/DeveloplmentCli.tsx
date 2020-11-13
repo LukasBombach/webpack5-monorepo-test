@@ -4,21 +4,23 @@ import { useExecutionTime } from "./useExecutionTime";
 import { useCompilation } from "./useCompilation";
 
 import type { Compiler } from "webpack";
+import type { Events } from "../../config";
 
 export interface DeveloplmentCliProps {
   compiler: Compiler;
+  events: Events;
 }
 
 export const DeveloplmentCli = ({ compiler }: DeveloplmentCliProps) => {
   const executionTime = useExecutionTime();
-  const compilation = useCompilation(compiler);
+  const compilation = useCompilation(compiler, events);
 
   if (!compilation.isLoading) {
     return <Text color="gray">Initializing Compiler...</Text>;
   }
 
   if (compilation.isRunning) {
-    const percentage = compilation.percentage.toString().padLeft(3, " ");
+    const percentage = compilation.percentage.toString().padStart(3, " ");
     const message = compilation.message;
     const text = `Compiling... ${percentage}% ${message}`;
     return <Text>{text}</Text>;

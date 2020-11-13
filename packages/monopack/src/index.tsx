@@ -5,9 +5,9 @@ import { getReporter } from "./reporter";
 
 async function main() {
   const options = await getOptions();
-  const config = await getWebpackConfig(options);
+  const { config, events } = await getWebpackConfig(options);
   const compiler = await getWebpackCompiler(config);
-  const reporter = await getReporter(compiler, options);
+  const reporter = await getReporter(compiler, events, options);
   await reporter.runCompilation();
 }
 

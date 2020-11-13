@@ -1,4 +1,6 @@
+import { EventEmitter } from "events";
 import { resolve } from "path";
+import { ProgressPlugin } from "webpack";
 
 import type { Configuration } from "webpack";
 import type { Options } from "./options";
@@ -6,10 +8,24 @@ import type { Options } from "./options";
 const root = (...paths: string[]) => resolve(__dirname, "..", ...paths);
 const cwd = (...paths: string[]) => resolve(process.cwd(), ...paths);
 
+export interface Events {
+  emit: (name: "progress", percentage: number, message: string) => void;
+  on: (
+    name: "progress",
+    listener: (percentage: number, message: string) => void
+  ) => void;
+  off: (
+    name: "progress",
+    listener: (percentage: number, message: string) => void
+  ) => void;
+}
+
 export async function getWebpackConfig(
   options: Options
-): Promise<Configuration> {
-  return {
+): Promise<{ config: Configuration; events: Events }> {
+  const events = new EventEmitter() as Events;
+
+  const config: Configuration = {
     entry: cwd("src/index.ts"),
     mode: "development",
     output: {
@@ -46,5 +62,12 @@ export async function getWebpackConfig(
       removeEmptyChunks: false,
       splitChunks: false,
     },
+    plugins: [
+      new ProgressPlugin((percentage, message) => {
+        events.emit("progress", percentage, message);
+      }),
+    ],
   };
+
+  return { config, events };
 }
