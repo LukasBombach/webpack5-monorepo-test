@@ -38,6 +38,8 @@ export async function getWebpackConfig(
     },
     resolveLoader: {
       modules: ["node_modules", root("node_modules")],
+      extensions: [".js", ".json"],
+      mainFields: ["loader", "main"],
     },
     module: {
       rules: [
@@ -55,6 +57,11 @@ export async function getWebpackConfig(
         },
       ],
     },
+    plugins: [
+      new ProgressPlugin((percentage, message) => {
+        events.emit("progress", percentage, message);
+      }),
+    ],
     optimization: {
       minimize: false,
       usedExports: true,
@@ -62,11 +69,6 @@ export async function getWebpackConfig(
       removeEmptyChunks: false,
       splitChunks: false,
     },
-    plugins: [
-      new ProgressPlugin((percentage, message) => {
-        events.emit("progress", percentage, message);
-      }),
-    ],
   };
 
   return { config, events };

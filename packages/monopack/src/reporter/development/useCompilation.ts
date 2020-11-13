@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { throttle } from "throttle-debounce";
 
 import type { Compiler } from "webpack";
 import type { Events } from "../../config";
@@ -7,9 +8,11 @@ interface Compilation {
   isLoading: boolean;
   isRunning: boolean;
   isDone: boolean;
-  percentage: number;
+  percentage: string;
   message: string;
 }
+
+const progressThrottleRate = 1000 / 24; // 24fps
 
 export function useCompilation(
   compiler: Compiler,
@@ -18,8 +21,8 @@ export function useCompilation(
   const [isLoading, setIsLoading] = useState(true);
   const [isRunning, setIsRunning] = useState(false);
   const [isDone, setIsDone] = useState(false);
-  const [percentage, setPercentage] = useState<number>();
-  const [message, setMessage] = useState<string>();
+  const [percentage, setPercentage] = useState("");
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     if (compiler.running) return;
@@ -30,13 +33,16 @@ export function useCompilation(
   useEffect(() => setIsRunning(compiler.running), [compiler.running]);
 
   useEffect(() => {
-    const onProgessHandler = (percentage: number, message: string) => {
-      setPercentage(percentage);
-      setMessage(message);
-    };
+    const onProgessHandler = throttle(
+      progressThrottleRate,
+      (percentage: number, message: string) => {
+        setPercentage((percentage * 100).toFixed());
+        setMessage(message);
+      }
+    );
     events.on("progress", onProgessHandler);
     return () => events.off("progress", onProgessHandler);
-  });
+  }, []);
 
   return { isLoading, isRunning, isDone, percentage, message };
 }
